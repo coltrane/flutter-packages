@@ -372,9 +372,13 @@ void main() {
       final List<PlatformCameraDescription> returnData =
           <PlatformCameraDescription>[
         PlatformCameraDescription(
-            name: 'Test 1', lensDirection: PlatformCameraLensDirection.front),
+            name: 'Test 1',
+            lensDirection: PlatformCameraLensDirection.front,
+            lensType: PlatformCameraLensType.builtInWideAngleCamera),
         PlatformCameraDescription(
-            name: 'Test 2', lensDirection: PlatformCameraLensDirection.back),
+            name: 'Test 2',
+            lensDirection: PlatformCameraLensDirection.back,
+            lensType: PlatformCameraLensType.builtInUltraWideCamera),
       ];
       when(mockApi.getAvailableCameras()).thenAnswer((_) async => returnData);
 
@@ -387,6 +391,8 @@ void main() {
             cameraLensDirectionFromPlatform(returnData[i].lensDirection));
         // This value isn't provided by the platform, so is hard-coded to 90.
         expect(cameras[i].sensorOrientation, 90);
+        expect(cameras[i].lensType,
+            cameraLensTypeFromPlatform(returnData[i].lensType));
       }
     });
 

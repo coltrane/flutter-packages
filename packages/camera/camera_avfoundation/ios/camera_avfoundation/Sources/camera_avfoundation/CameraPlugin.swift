@@ -131,16 +131,27 @@ extension CameraPlugin: FCPCameraApi {
     captureSessionQueue.async { [weak self] in
       guard let strongSelf = self else { return }
 
-      var discoveryDevices: [AVCaptureDevice.DeviceType] = [
-        .builtInWideAngleCamera,
-        .builtInTelephotoCamera,
-      ]
+      var discoveryDevices: [AVCaptureDevice.DeviceType] = []
+
+      if #available(iOS 13.0, *) {
+        discoveryDevices.append(contentsOf: [
+          .builtInTripleCamera,
+          .builtInDualWideCamera,
+        ])
+      }
+
+      discoveryDevices.append(.builtInDualCamera)
 
       if #available(iOS 13.0, *) {
         discoveryDevices.append(.builtInUltraWideCamera)
       }
 
-      let devices = strongSelf.deviceDiscoverer.discoverySession(
+      discoveryDevices.append(contentsOf: [
+        .builtInWideAngleCamera,
+        .builtInTelephotoCamera,
+      ])
+
+      var devices = strongSelf.deviceDiscoverer.discoverySession(
         withDeviceTypes: discoveryDevices,
         mediaType: .video,
         position: .unspecified)
@@ -161,9 +172,36 @@ extension CameraPlugin: FCPCameraApi {
           lensFacing = .external
         }
 
+        var lensType: FCPPlatformCameraLensType
+
+        switch device.deviceType {
+        case .builtInWideAngleCamera:
+          lensType = .builtInWideAngleCamera
+        case .builtInTelephotoCamera:
+          lensType = .builtInTelephotoCamera
+        case .builtInDualCamera:
+          lensType = .builtInDualCamera
+        default:
+          lensType = .unknown
+        }
+
+        if #available(iOS 13.0, *), lensType == .unknown {
+          switch device.deviceType {
+          case .builtInUltraWideCamera:
+            lensType = .builtInUltraWideCamera
+          case .builtInDualWideCamera:
+            lensType = .builtInDualWideCamera
+          case .builtInTripleCamera:
+            lensType = .builtInTripleCamera
+          default:
+            lensType = .unknown
+          }
+        }
+
         let cameraDescription = FCPPlatformCameraDescription.make(
           withName: device.uniqueID,
-          lensDirection: lensFacing
+          lensDirection: lensFacing,
+          lensType: lensType
         )
         reply.append(cameraDescription)
       }
