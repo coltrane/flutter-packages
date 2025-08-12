@@ -134,24 +134,24 @@ extension CameraPlugin: FCPCameraApi {
       var discoveryDevices: [AVCaptureDevice.DeviceType] = []
 
       if #available(iOS 13.0, *) {
-        discoveryDevices.append(contentsOf: [
-          .builtInTripleCamera,
-          .builtInDualWideCamera,
-        ])
+        discoveryDevices.append(.builtInTripleCamera)
+        discoveryDevices.append(.builtInDualWideCamera)
       }
 
+      // iOS 10.2
       discoveryDevices.append(.builtInDualCamera)
+
+      // iOS 10.0
+      discoveryDevices.append(.builtInWideAngleCamera)
 
       if #available(iOS 13.0, *) {
         discoveryDevices.append(.builtInUltraWideCamera)
       }
 
-      discoveryDevices.append(contentsOf: [
-        .builtInWideAngleCamera,
-        .builtInTelephotoCamera,
-      ])
+      // iOS 10.0
+      discoveryDevices.append(.builtInTelephotoCamera)
 
-      var devices = strongSelf.deviceDiscoverer.discoverySession(
+      let devices = strongSelf.deviceDiscoverer.discoverySession(
         withDeviceTypes: discoveryDevices,
         mediaType: .video,
         position: .unspecified)

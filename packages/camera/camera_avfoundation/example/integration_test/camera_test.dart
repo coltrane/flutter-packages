@@ -72,20 +72,25 @@ void main() {
 
   testWidgets('Capture specific image resolutions',
       (WidgetTester tester) async {
+    print("*capture specific image");
     final List<CameraDescription> cameras =
         await CameraPlatform.instance.availableCameras();
+    print("*got available cameras ${cameras}");
     if (cameras.isEmpty) {
       return;
     }
     for (final CameraDescription cameraDescription in cameras) {
+      print("*checking camera ${cameraDescription}");
       bool previousPresetExactlySupported = true;
       for (final MapEntry<ResolutionPreset, Size> preset
           in presetExpectedSizes.entries) {
         final CameraController controller =
             CameraController(cameraDescription, preset.key);
         await controller.initialize();
+        print("*testing preset ${preset.key}");
         final bool presetExactlySupported =
             await testCaptureImageResolution(controller, preset.key);
+        print("*done ${previousPresetExactlySupported} / ${presetExactlySupported}");
         assert(!(!previousPresetExactlySupported && presetExactlySupported),
             'The camera took higher resolution pictures at a lower resolution.');
         previousPresetExactlySupported = presetExactlySupported;

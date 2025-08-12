@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 // Position/Orientation
 @property(nonatomic, readonly) AVCaptureDevicePosition position;
 
-// Position/Orientation
+// Device type
 @property(nonatomic, readonly) AVCaptureDeviceType deviceType;
 
 // Format/Configuration
