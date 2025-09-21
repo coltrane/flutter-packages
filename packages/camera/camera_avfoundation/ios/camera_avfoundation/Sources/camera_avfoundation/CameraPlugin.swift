@@ -131,10 +131,13 @@ extension CameraPlugin: FCPCameraApi {
     captureSessionQueue.async { [weak self] in
       guard let strongSelf = self else { return }
 
-      let discoveryDevices: [AVCaptureDevice.DeviceType] = [
+      var discoveryDevices: [AVCaptureDevice.DeviceType] = [
+        .builtInTripleCamera,
+        .builtInDualWideCamera,
+        .builtInDualCamera,
         .builtInWideAngleCamera,
-        .builtInTelephotoCamera,
         .builtInUltraWideCamera,
+        .builtInTelephotoCamera,
       ]
 
       let devices = strongSelf.deviceDiscoverer.discoverySession(
@@ -158,9 +161,36 @@ extension CameraPlugin: FCPCameraApi {
           lensFacing = .external
         }
 
+        var lensType: FCPPlatformCameraLensType
+
+        switch device.deviceType {
+        case .builtInWideAngleCamera:
+          lensType = .builtInWideAngleCamera
+        case .builtInTelephotoCamera:
+          lensType = .builtInTelephotoCamera
+        case .builtInDualCamera:
+          lensType = .builtInDualCamera
+        default:
+          lensType = .unknown
+        }
+
+        if #available(iOS 13.0, *), lensType == .unknown {
+          switch device.deviceType {
+          case .builtInUltraWideCamera:
+            lensType = .builtInUltraWideCamera
+          case .builtInDualWideCamera:
+            lensType = .builtInDualWideCamera
+          case .builtInTripleCamera:
+            lensType = .builtInTripleCamera
+          default:
+            lensType = .unknown
+          }
+        }
+
         let cameraDescription = FCPPlatformCameraDescription.make(
           withName: device.uniqueID,
-          lensDirection: lensFacing
+          lensDirection: lensFacing,
+          lensType: lensType
         )
         reply.append(cameraDescription)
       }

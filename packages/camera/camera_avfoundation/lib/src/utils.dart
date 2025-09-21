@@ -15,7 +15,21 @@ CameraDescription cameraDescriptionFromPlatform(
     name: camera.name,
     lensDirection: cameraLensDirectionFromPlatform(camera.lensDirection),
     sensorOrientation: 90,
+    lensType: cameraLensTypeFromPlatform(camera.lensType),
   );
+}
+
+/// Converts a Pigeon [PlatformCameraLensType] to a [CameraLensType].
+CameraLensType cameraLensTypeFromPlatform(PlatformCameraLensType lensType) {
+  return switch (lensType) {
+    PlatformCameraLensType.builtInWideAngleCamera => CameraLensType.wide,
+    PlatformCameraLensType.builtInUltraWideCamera => CameraLensType.ultraWide,
+    PlatformCameraLensType.builtInTelephotoCamera => CameraLensType.telephoto,
+    PlatformCameraLensType.builtInDualCamera => CameraLensType.wide,
+    PlatformCameraLensType.builtInDualWideCamera => CameraLensType.ultraWide,
+    PlatformCameraLensType.builtInTripleCamera => CameraLensType.ultraWide,
+    PlatformCameraLensType.unknown => CameraLensType.unknown,
+  };
 }
 
 /// Converts a Pigeon [PlatformCameraLensDirection] to a [CameraLensDirection].
