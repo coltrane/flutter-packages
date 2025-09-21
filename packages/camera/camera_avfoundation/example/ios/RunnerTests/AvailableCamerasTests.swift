@@ -51,10 +51,26 @@ final class AvailableCamerasTest: XCTestCase {
     telephotoCamera.position = .back
     telephotoCamera.deviceType = .builtInTelephotoCamera
 
+    let dualCamera = MockCaptureDevice()
+    dualCamera.uniqueID = "4"
+    dualCamera.position = .back
+    dualCamera.deviceType = .builtInDualCamera
+
+    let dualWideCamera = MockCaptureDevice()
+    dualWideCamera.uniqueID = "5"
+    dualWideCamera.position = .back
+    dualWideCamera.deviceType = .builtInDualWideCamera
+
+    let tripleCamera = MockCaptureDevice()
+    tripleCamera.uniqueID = "6"
+    tripleCamera.position = .back
+    tripleCamera.deviceType = .builtInTripleCamera
+
     // the order of `cameras` is important. It must match the order of the
     // discoveryDevices list used by availableCameras()
     cameras = [
-      wideAngleCamera, frontFacingCamera, telephotoCamera, ultraWideCamera,
+      tripleCamera, dualWideCamera, dualCamera, wideAngleCamera, frontFacingCamera,
+      ultraWideCamera, telephotoCamera,
     ]
 
     return cameras
@@ -72,9 +88,12 @@ final class AvailableCamerasTest: XCTestCase {
     // this in our discovery session stub to confirm that availableCameras()
     // requests the correct DeviceTypes in the correct order.
     var expectedDeviceTypesToBeRequested: [AVCaptureDevice.DeviceType] = [
+      .builtInTripleCamera,
+      .builtInDualWideCamera,
+      .builtInDualCamera,
       .builtInWideAngleCamera,
-      .builtInTelephotoCamera,
       .builtInUltraWideCamera,
+      .builtInTelephotoCamera,
     ]
 
     mockDeviceDiscoverer.discoverySessionStub = { deviceTypes, mediaType, position in

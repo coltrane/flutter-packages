@@ -118,7 +118,10 @@ typedef NS_ENUM(NSUInteger, FCPPlatformCameraLensType) {
   FCPPlatformCameraLensTypeBuiltInWideAngleCamera = 0,
   FCPPlatformCameraLensTypeBuiltInUltraWideCamera = 1,
   FCPPlatformCameraLensTypeBuiltInTelephotoCamera = 2,
-  FCPPlatformCameraLensTypeUnknown = 3,
+  FCPPlatformCameraLensTypeBuiltInDualCamera = 3,
+  FCPPlatformCameraLensTypeBuiltInDualWideCamera = 4,
+  FCPPlatformCameraLensTypeBuiltInTripleCamera = 5,
+  FCPPlatformCameraLensTypeUnknown = 6,
 };
 
 /// Wrapper for FCPPlatformCameraLensType to allow for nullability.

@@ -67,6 +67,9 @@ enum PlatformCameraLensType {
   builtInWideAngleCamera,
   builtInUltraWideCamera,
   builtInTelephotoCamera,
+  builtInDualCamera,
+  builtInDualWideCamera,
+  builtInTripleCamera,
   unknown,
 }
 

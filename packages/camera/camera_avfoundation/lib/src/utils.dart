@@ -25,6 +25,9 @@ CameraLensType cameraLensTypeFromPlatform(PlatformCameraLensType lensType) {
     PlatformCameraLensType.builtInWideAngleCamera => CameraLensType.wide,
     PlatformCameraLensType.builtInUltraWideCamera => CameraLensType.ultraWide,
     PlatformCameraLensType.builtInTelephotoCamera => CameraLensType.telephoto,
+    PlatformCameraLensType.builtInDualCamera => CameraLensType.wide,
+    PlatformCameraLensType.builtInDualWideCamera => CameraLensType.ultraWide,
+    PlatformCameraLensType.builtInTripleCamera => CameraLensType.ultraWide,
     PlatformCameraLensType.unknown => CameraLensType.unknown,
   };
 }

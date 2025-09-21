@@ -132,9 +132,12 @@ extension CameraPlugin: FCPCameraApi {
       guard let strongSelf = self else { return }
 
       let discoveryDevices: [AVCaptureDevice.DeviceType] = [
+        .builtInTripleCamera,
+        .builtInDualWideCamera,
+        .builtInDualCamera,
         .builtInWideAngleCamera,
-        .builtInTelephotoCamera,
         .builtInUltraWideCamera,
+        .builtInTelephotoCamera,
       ]
 
       let devices = strongSelf.deviceDiscoverer.discoverySession(
@@ -165,8 +168,14 @@ extension CameraPlugin: FCPCameraApi {
           lensType = .builtInWideAngleCamera
         case .builtInTelephotoCamera:
           lensType = .builtInTelephotoCamera
+        case .builtInDualCamera:
+          lensType = .builtInDualCamera
         case .builtInUltraWideCamera:
           lensType = .builtInUltraWideCamera
+        case .builtInDualWideCamera:
+          lensType = .builtInDualWideCamera
+        case .builtInTripleCamera:
+          lensType = .builtInTripleCamera
         default:
           lensType = .unknown
         }

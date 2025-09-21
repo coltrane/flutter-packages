@@ -37,6 +37,26 @@ void main() {
         CameraLensType.unknown,
         reason: 'PlatformLensType.unknown',
       );
+
+      // Composite cameras (dual/triple lens) consist of more than one physical lens managed as a single logical camera,
+      // They are mapped to the most representative CameraLensType available.
+      expect(
+        cameraLensTypeFromPlatform(PlatformCameraLensType.builtInDualCamera),
+        CameraLensType.wide,
+        reason: 'PlatformLensType.builtInDualCamera',
+      );
+      expect(
+        cameraLensTypeFromPlatform(
+          PlatformCameraLensType.builtInDualWideCamera,
+        ),
+        CameraLensType.ultraWide,
+        reason: 'PlatformLensType.builtInDualWideCamera',
+      );
+      expect(
+        cameraLensTypeFromPlatform(PlatformCameraLensType.builtInTripleCamera),
+        CameraLensType.ultraWide,
+        reason: 'PlatformLensType.builtInTripleCamera',
+      );
     });
 
     test('Should convert CameraLensDirection values correctly', () {
